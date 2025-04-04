@@ -1,35 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Progress } from '@/components/ui/progress';
-
-// Temporary dummy questions for demonstration
-const dummyQuestions = [
-  {
-    id: 1,
-    question: 'ما هي المادة التي تنص على أن المتهم بريء حتى تثبت إدانته في القانون الجنائي المغربي؟',
-    options: ['المادة 1', 'المادة 3', 'المادة 7', 'المادة 10'],
-    correctAnswer: 1,
-    explanation: 'تنص المادة 3 من القانون الجنائي المغربي على مبدأ البراءة حتى ثبوت الإدانة.'
-  },
-  {
-    id: 2,
-    question: 'متى صدر آخر تعديل على قانون الأسرة المغربي (مدونة الأسرة)؟',
-    options: ['2004', '2010', '2016', '2020'],
-    correctAnswer: 0,
-    explanation: 'صدر آخر تعديل شامل على مدونة الأسرة المغربية في عام 2004.'
-  },
-  {
-    id: 3,
-    question: 'ما هو النظام القانوني للعقود في القانون المدني المغربي؟',
-    options: ['قانون الالتزامات والعقود', 'القانون التجاري', 'مدونة الأسرة', 'القانون الإداري'],
-    correctAnswer: 0,
-    explanation: 'ينظم قانون الالتزامات والعقود المغربي العقود في القانون المدني.'
-  },
-];
+import quizData from '../data/quizQuestions';
 
 const Quiz = () => {
   const { categoryId } = useParams();
@@ -38,6 +14,13 @@ const Quiz = () => {
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState(0);
   const [completed, setCompleted] = useState(false);
+  const [questions, setQuestions] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (categoryId && quizData[categoryId]) {
+      setQuestions(quizData[categoryId]);
+    }
+  }, [categoryId]);
 
   const handleAnswerSelect = (index: number) => {
     setSelectedAnswer(index);
@@ -45,11 +28,11 @@ const Quiz = () => {
 
   const handleNextQuestion = () => {
     // Check if answer is correct and update score
-    if (selectedAnswer === dummyQuestions[currentQuestion].correctAnswer) {
+    if (selectedAnswer === questions[currentQuestion].correctAnswer) {
       setScore(score + 1);
     }
 
-    if (currentQuestion < dummyQuestions.length - 1) {
+    if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
       setShowExplanation(false);
@@ -72,6 +55,28 @@ const Quiz = () => {
     'constitutional': 'القانون الدستوري',
   };
 
+  if (!categoryId || !quizData[categoryId] || questions.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+        <Card className="w-full max-w-lg">
+          <CardHeader>
+            <CardTitle className="text-2xl text-center">خطأ في تحميل الاختبار</CardTitle>
+          </CardHeader>
+          <CardContent className="text-center">
+            <p className="text-gray-600 dark:text-gray-300">
+              لم نتمكن من العثور على الاختبار المطلوب
+            </p>
+          </CardContent>
+          <CardFooter className="flex justify-center">
+            <Link to="/">
+              <Button>العودة للصفحة الرئيسية</Button>
+            </Link>
+          </CardFooter>
+        </Card>
+      </div>
+    );
+  }
+
   if (completed) {
     return (
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
@@ -80,7 +85,7 @@ const Quiz = () => {
             <CardTitle className="text-2xl text-center">النتيجة النهائية</CardTitle>
           </CardHeader>
           <CardContent className="text-center">
-            <p className="text-4xl font-bold mb-4">{score} / {dummyQuestions.length}</p>
+            <p className="text-4xl font-bold mb-4">{score} / {questions.length}</p>
             <p className="text-gray-600 dark:text-gray-300">
               أحسنت! لقد أكملت اختبار {categoryNames[categoryId || '']}
             </p>
@@ -90,7 +95,7 @@ const Quiz = () => {
               <Button>العودة للصفحة الرئيسية</Button>
             </Link>
             <Link to={`/quiz/${categoryId}`}>
-              <Button variant="outline">إعادة المحاولة</Button>
+              <Button variant="outline" onClick={() => window.location.reload()}>إعادة المحاولة</Button>
             </Link>
           </CardFooter>
         </Card>
@@ -98,7 +103,7 @@ const Quiz = () => {
     );
   }
 
-  const currentQuestionData = dummyQuestions[currentQuestion];
+  const currentQuestionData = questions[currentQuestion];
   
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -109,9 +114,9 @@ const Quiz = () => {
           </h1>
           <div className="flex items-center mb-2">
             <span className="text-sm text-gray-600 dark:text-gray-300 ml-2">
-              السؤال {currentQuestion + 1} من {dummyQuestions.length}
+              السؤال {currentQuestion + 1} من {questions.length}
             </span>
-            <Progress value={((currentQuestion + 1) / dummyQuestions.length) * 100} className="h-2 flex-grow" />
+            <Progress value={((currentQuestion + 1) / questions.length) * 100} className="h-2 flex-grow" />
           </div>
         </header>
 
@@ -127,7 +132,7 @@ const Quiz = () => {
               value={selectedAnswer?.toString()}
               onValueChange={(value) => handleAnswerSelect(parseInt(value))}
             >
-              {currentQuestionData.options.map((option, index) => (
+              {currentQuestionData.options.map((option: string, index: number) => (
                 <div key={index} className="flex items-center space-x-2 justify-end space-x-reverse">
                   <label htmlFor={`option-${index}`} className="text-lg">{option}</label>
                   <RadioGroupItem 
@@ -161,7 +166,7 @@ const Quiz = () => {
               </Button>
             ) : (
               <Button onClick={handleNextQuestion}>
-                {currentQuestion < dummyQuestions.length - 1 ? 'السؤال التالي' : 'إنهاء الاختبار'}
+                {currentQuestion < questions.length - 1 ? 'السؤال التالي' : 'إنهاء الاختبار'}
               </Button>
             )}
             <Button variant="outline" asChild>

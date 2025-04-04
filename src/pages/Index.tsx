@@ -3,15 +3,58 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { BookOpen, GavelIcon, ScalesIcon, Users, Building2, Briefcase, LandmarkIcon } from 'lucide-react';
 
 const legalCategories = [
-  { id: 'criminal', name: 'القانون الجنائي', color: 'bg-red-500' },
-  { id: 'civil', name: 'القانون المدني', color: 'bg-blue-500' },
-  { id: 'administrative', name: 'القانون الإداري', color: 'bg-green-500' },
-  { id: 'family', name: 'قانون الأسرة', color: 'bg-purple-500' },
-  { id: 'commercial', name: 'القانون التجاري', color: 'bg-yellow-500' },
-  { id: 'labor', name: 'قانون الشغل', color: 'bg-orange-500' },
-  { id: 'constitutional', name: 'القانون الدستوري', color: 'bg-teal-500' },
+  { 
+    id: 'criminal', 
+    name: 'القانون الجنائي', 
+    color: 'bg-red-500',
+    icon: GavelIcon,
+    questions: 30
+  },
+  { 
+    id: 'civil', 
+    name: 'القانون المدني', 
+    color: 'bg-blue-500',
+    icon: ScalesIcon,
+    questions: 30
+  },
+  { 
+    id: 'administrative', 
+    name: 'القانون الإداري', 
+    color: 'bg-green-500',
+    icon: LandmarkIcon,
+    questions: 30
+  },
+  { 
+    id: 'family', 
+    name: 'قانون الأسرة', 
+    color: 'bg-purple-500',
+    icon: Users,
+    questions: 30
+  },
+  { 
+    id: 'commercial', 
+    name: 'القانون التجاري', 
+    color: 'bg-yellow-500',
+    icon: Building2,
+    questions: 30
+  },
+  { 
+    id: 'labor', 
+    name: 'قانون الشغل', 
+    color: 'bg-orange-500',
+    icon: Briefcase,
+    questions: 30
+  },
+  { 
+    id: 'constitutional', 
+    name: 'القانون الدستوري', 
+    color: 'bg-teal-500',
+    icon: BookOpen,
+    questions: 30
+  },
 ];
 
 const Index = () => {
@@ -28,11 +71,11 @@ const Index = () => {
             <Card key={category.id} className="border-t-4 hover:shadow-lg transition-shadow duration-300" style={{ borderTopColor: category.color.replace('bg-', '') }}>
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-right">{category.name}</CardTitle>
-                <CardDescription className="text-right">30 سؤال متنوع</CardDescription>
+                <CardDescription className="text-right">{category.questions} سؤال متنوع</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className={`w-16 h-16 rounded-full ${category.color} flex items-center justify-center mx-auto mb-4`}>
-                  <span className="text-white text-2xl">?</span>
+                  <category.icon className="text-white h-8 w-8" />
                 </div>
               </CardContent>
               <CardFooter className="flex justify-center">
