@@ -3,28 +3,28 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, GavelIcon, ScalesIcon, Users, Building2, Briefcase, LandmarkIcon } from 'lucide-react';
+import { BookOpen, Gavel, Scale, Users, Building2, Briefcase, Landmark } from 'lucide-react';
 
 const legalCategories = [
   { 
     id: 'criminal', 
     name: 'القانون الجنائي', 
     color: 'bg-red-500',
-    icon: GavelIcon,
+    icon: Gavel,
     questions: 30
   },
   { 
     id: 'civil', 
     name: 'القانون المدني', 
     color: 'bg-blue-500',
-    icon: ScalesIcon,
+    icon: Scale,
     questions: 30
   },
   { 
     id: 'administrative', 
     name: 'القانون الإداري', 
     color: 'bg-green-500',
-    icon: LandmarkIcon,
+    icon: Landmark,
     questions: 30
   },
   { 
