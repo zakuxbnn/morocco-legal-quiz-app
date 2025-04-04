@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,21 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Law-themed color palette
+				law: {
+					maroon: '#800020',
+					navy: '#000080',
+					gold: '#FFD700',
+					darkred: '#8B0000',
+					burgundy: '#800020',
+					forest: '#228B22',
+					crimson: '#DC143C',
+					royal: '#4169E1',
+					charcoal: '#36454F',
+					slate: '#708090',
+					ivory: '#FFFFF0',
+					parchment: '#F5F5DC'
 				}
 			},
 			borderRadius: {
