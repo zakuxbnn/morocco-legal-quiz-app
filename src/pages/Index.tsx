@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Gavel, Scale, Users, Building2, Briefcase, Landmark } from 'lucide-react';
+import NavBar from '@/components/NavBar';
 
 const legalCategories = [
   { 
@@ -67,6 +68,7 @@ const legalCategories = [
 const Index = () => {
   return (
     <div className="min-h-screen bg-parchment dark:bg-gray-900">
+      <NavBar />
       <div className="container mx-auto px-4 py-8">
         <header className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-2 text-law-navy dark:text-white">اختبار القانون المغربي</h1>
@@ -92,18 +94,6 @@ const Index = () => {
               </CardFooter>
             </Card>
           ))}
-        </div>
-        
-        <div className="mt-12 flex justify-center gap-4">
-          <Link to="/daily">
-            <Button variant="secondary" className="bg-law-gold text-law-navy hover:bg-law-gold/80">سؤال اليوم</Button>
-          </Link>
-          <Link to="/favorites">
-            <Button variant="secondary" className="bg-law-gold text-law-navy hover:bg-law-gold/80">المفضلة</Button>
-          </Link>
-          <Link to="/settings">
-            <Button variant="secondary" className="bg-law-gold text-law-navy hover:bg-law-gold/80">الإعدادات</Button>
-          </Link>
         </div>
       </div>
     </div>
